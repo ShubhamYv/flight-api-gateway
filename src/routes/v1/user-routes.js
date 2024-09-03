@@ -20,4 +20,7 @@ router
     AuthMiddlewares.isAdmin,
     UserController.addRoleToUser);
 
+
+router.get('/:userId', UserController.getUserById);
+
 module.exports = router;

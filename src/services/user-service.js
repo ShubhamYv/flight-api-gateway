@@ -122,10 +122,27 @@ async function isAdmin(id) {
   }
 }
 
+async function getUserById(userId) {
+  try {
+    const user = await userRepository.get(userId);
+    const userDetails = {
+      id: user.id,
+      email: user.email,
+    }
+    return userDetails;
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError('Something went wrong while fetching user.', StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
 module.exports = {
   createUser,
   signin,
   isAuthenticated,
   addRoleToUser,
   isAdmin,
+  getUserById,
 }
