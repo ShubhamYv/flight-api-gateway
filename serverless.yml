@@ -1,0 +1,58 @@
+service: flight-api-gateway-backend
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 3008
+  timeout: 30
+  stage: '${opt:stage, "dev"}'
+  region: eu-north-1
+  lambdaHashingVersion: 20201221
+
+package:
+  individually: true
+  exclude:
+    - .git/**
+    - tests/**
+    - docs/**
+  include:
+    - node_modules/serverless-http/**
+
+functions:
+  api:
+    handler: handler.main
+    events:
+      - httpApi:
+          path: /api/v1/user/signup
+          method: POST
+      - httpApi:
+          path: /api/v1/user/signin
+          method: POST
+      - httpApi:
+          path: /api/v1/user/role
+          method: POST
+      - httpApi:
+          path: /api/v1/user/:userId
+          method: GET
+
+plugins:
+  - serverless-offline
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: "AWS::ApiGatewayV2::Api"
+      Properties:
+        Name: flight-api-gateway-backend
+        ProtocolType: HTTP
+        CorsConfiguration:
+          AllowOrigins:
+            - "*"
+          AllowMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+          AllowHeaders:
+            - Content-Type
+            - Authorization

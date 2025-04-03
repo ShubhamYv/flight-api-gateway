@@ -1,3 +1,4 @@
+const serverless = require('serverless-http');
 const express = require('express')
 const { ServerConfig, Logger } = require('./config')
 const apiRoutes = require('./routes')
@@ -32,7 +33,9 @@ app.use("/bookingService", bookingServiceApiProxy);
 
 app.use("/api", apiRoutes);
 
-app.listen(ServerConfig.PORT, () => {
-  console.log(`Port is running on ${ServerConfig.PORT}`);
+// app.listen(ServerConfig.PORT, () => {
+//   console.log(`Port is running on ${ServerConfig.PORT}`);
   // Logger.info("Successfully started the server", {})
-})
+// })
+
+module.exports.handler = serverless(app);

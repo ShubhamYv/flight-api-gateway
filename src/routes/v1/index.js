@@ -4,7 +4,7 @@ const userRoutes = require('./user-routes');
 const { AuthMiddlewares } = require('../../middlewares');
 const { TestController } = require('../../controllers');
 
-router.use('/user', userRoutes);
+router.use('/user', AuthMiddlewares.checkAuth, userRoutes);
 
 router.get('/test', AuthMiddlewares.checkAuth, TestController.testAPI);
 
